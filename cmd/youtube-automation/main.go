@@ -13,6 +13,7 @@ import (
 	"devopstoolkit/youtube-automation/internal/api"
 	"devopstoolkit/youtube-automation/internal/app"
 	"devopstoolkit/youtube-automation/internal/configuration"
+	"devopstoolkit/youtube-automation/internal/notification"
 	"devopstoolkit/youtube-automation/internal/platform/bluesky"
 )
 
@@ -27,6 +28,9 @@ func main() {
 
 	// Parse CLI arguments and load configuration
 	configuration.GetArgs()
+
+	// Initialize notification system
+	notification.InitializeNotifications()
 
 	// Validate Bluesky configuration if identifier is set
 	if configuration.GlobalSettings.Bluesky.Identifier != "" {

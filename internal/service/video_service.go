@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"devopstoolkit/youtube-automation/internal/filesystem"
+	"devopstoolkit/youtube-automation/internal/notification"
 	"devopstoolkit/youtube-automation/internal/storage"
 	"devopstoolkit/youtube-automation/internal/video"
 	"devopstoolkit/youtube-automation/internal/workflow"
@@ -302,7 +303,24 @@ func (s *VideoService) UpdateVideo(video storage.Video) error {
 		return fmt.Errorf("video path is required")
 	}
 
-	return s.yamlStorage.WriteVideo(video, video.Path)
+	// Get the old video for phase change detection
+	oldVideo, err := s.yamlStorage.GetVideo(video.Path)
+	if err != nil {
+		// If we can't get the old video, proceed without notification
+		// (this might be a new video or the file doesn't exist yet)
+		return s.yamlStorage.WriteVideo(video, video.Path)
+	}
+
+	// Save the updated video
+	if err := s.yamlStorage.WriteVideo(video, video.Path); err != nil {
+		return err
+	}
+
+	// Check for phase changes and send notifications
+	// Import will be added automatically: "devopstoolkit/youtube-automation/internal/notification"
+	notification.NotifyPhaseChange(oldVideo, video)
+
+	return nil
 }
 
 // DeleteVideo deletes a video and its associated files

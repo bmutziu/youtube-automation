@@ -26,6 +26,11 @@ api:
   port: 8080
   enabled: false
 
+# Added for PRD: Multi-Channel Notification System
+notifications:
+  enabled: true
+  phaseTransitions: true
+
 slack:
   targetChannelIDs:
     - "C0123EXAMPLE1" # Placeholder: e.g., #announcements

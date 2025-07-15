@@ -25,6 +25,7 @@ type Settings struct {
 	Bluesky       SettingsBluesky       `yaml:"bluesky"`
 	VideoDefaults SettingsVideoDefaults `yaml:"videoDefaults"`
 	API           SettingsAPI           `yaml:"api"`
+	Notifications SettingsNotifications `yaml:"notifications"`
 	Slack         SettingsSlack         `yaml:"slack"`
 }
 
@@ -66,6 +67,11 @@ type SettingsVideoDefaults struct {
 type SettingsAPI struct {
 	Port    int  `yaml:"port"`
 	Enabled bool `yaml:"enabled"`
+}
+
+type SettingsNotifications struct {
+	Enabled         bool `yaml:"enabled"`
+	PhaseTransitions bool `yaml:"phaseTransitions"`
 }
 
 type SettingsSlack struct {
